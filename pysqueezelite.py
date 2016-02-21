@@ -48,7 +48,7 @@ class PySqueezelite(object):
       track_time: time elapsed
     """
 
-    def __init__(self, path="/usr/bin/squeezelite", 
+    def __init__(self, path="/usr/bin/squeezelite",
                  plname="Squeezelite",
                  mac="12:34:56:78:90:AB",
                  server=None,
@@ -76,8 +76,6 @@ class PySqueezelite(object):
         if not self.server:
             self.server = self.__discover_server()
 
-        self.connect(self.server, self.telnetport)
-
         # Default command. "-z" flag daemonises process.
         command = [self.path, "-z"]
 
@@ -100,6 +98,7 @@ class PySqueezelite(object):
         # Launch player
         subprocess.call(command)
 
+        self.connect(self.server, self.telnetport)
 
     def kill(self):
         """Kills all instances of squeezelite found on the machine."""
@@ -113,7 +112,7 @@ class PySqueezelite(object):
 
     def __discover_server(self):
         self.devices = [x for x in discover("ssdp:all") if x]
-        
+
         self.matches = [x.ip for x in self.devices if x.port == self.lmsport]
 
         if len(self.matches) > 1:
@@ -125,7 +124,7 @@ class PySqueezelite(object):
             raise PySqueezeliteError("No servers found on "
                                      "port {}. Please check LMS is "
                                      "running and the correct "
-                                     "port has been set.".format(self.lmsport))            
+                                     "port has been set.".format(self.lmsport))
         else:
             return self.matches[0]
 
@@ -157,30 +156,27 @@ class PySqueezelite(object):
     def prev_track(self):
         self.player.prev()
 
-    @property 
+    @property
     def track_title(self):
 
         return self.get_player_info("get_track_title")
 
-    @property 
+    @property
     def track_artist(self):
 
         return self.get_player_info("get_track_artist")
 
-    @property 
+    @property
     def track_album(self):
 
         return self.get_player_info("get_track_album")
 
-    @property 
+    @property
     def track_duration(self):
 
         return self.get_player_info("get_track_duration")
 
-    @property   
+    @property
     def track_time(self):
 
         return self.get_player_info("get_time_elapsed")
-
-
-
