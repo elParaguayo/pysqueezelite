@@ -1,0 +1,3 @@
+[submodule "pylms"]
+	path = pylms
+	url = git@github.com:elParaguayo/pylms.git
